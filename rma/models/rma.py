@@ -98,7 +98,7 @@ class Rma(models.Model):
     )
     move_id = fields.Many2one(
         comodel_name="stock.move",
-        string="Origin move",
+        string="Origin Move",
         domain="["
         "    ('picking_id', '=', picking_id),"
         "    ('picking_id', '!=', False)"
@@ -110,6 +110,7 @@ class Rma(models.Model):
         comodel_name="product.product",
         domain=[("type", "in", ["consu", "product"])],
     )
+    origin_uom_qty = fields.Float("Origin Qty", related="move_id.product_uom_qty")
     product_uom_qty = fields.Float(
         string="Quantity",
         required=True,
@@ -418,6 +419,17 @@ class Rma(models.Model):
         rma = self.filtered(lambda r: r.state not in ["draft", "cancelled"])
         rma._ensure_required_fields()
 
+    @api.constrains("move_id","product_uom_qty")
+    def _check_quantity_if_move_id(self):
+        """If move_id, the quantity must be more than 0 and not more than the original quantity
+        """
+        for rec in self:
+            if rec.move_id:
+                if not 0 < rec.product_uom_qty <= rec.move_id.product_uom_qty:
+                    raise ValidationError(
+                        _("RMAs quantity must be bigger than 0 and smaller or equal to initial quantity")+f"\n{rec}" )
+
+    
     # onchange methods (@api.onchange)
     @api.onchange("user_id")
     def _onchange_user_id(self):
