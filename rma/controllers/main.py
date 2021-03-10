@@ -46,7 +46,7 @@ class PortalRma(CustomerPortal):
         if not sortby:
             sortby = "date"
         order = searchbar_sortings[sortby]["order"]
-        archive_groups = self._get_archive_groups("rma", domain)
+#v14 does not exist        archive_groups = self._get_archive_groups("rma", domain)
         if date_begin and date_end:
             domain += [
                 ("create_date", ">", date_begin),
@@ -77,7 +77,7 @@ class PortalRma(CustomerPortal):
                 "rmas": rmas,
                 "page_name": "RMA",
                 "pager": pager,
-                "archive_groups": archive_groups,
+#                "archive_groups": archive_groups,
                 "default_url": "/my/rmas",
                 "searchbar_sortings": searchbar_sortings,
                 "sortby": sortby,
