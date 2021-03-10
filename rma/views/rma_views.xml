@@ -247,12 +247,12 @@
                                 options="{'no_create': True}"
                                 force_save="1"
                             />
+                            <field name="origin_uom_qty"/>
                             <field
                                 name="product_id"
                                 force_save="1"
                                 attrs="{'readonly': ['|', ('picking_id', '!=', False), ('state', '!=', 'draft')]}"
                             />
-                            <field name="origin_uom_qty"/>
                             
                             <label for="product_uom_qty" />
                             <div class="o_row">
