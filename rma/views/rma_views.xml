@@ -255,7 +255,7 @@
                             <label for="product_uom_qty" />
                             <div class="o_row">
                                 <field name="product_uom_qty" />
-                                <field name="product_uom" groups="uom.group_uom" />
+                                <field name="product_uom" groups="uom.group_uom" readonly="1"/>
                             </div>
                             <field
                                 name="delivered_qty"
