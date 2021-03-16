@@ -421,14 +421,13 @@ class Rma(models.Model):
 
     @api.constrains("move_id", "product_uom_qty")
     def _check_quantity_if_move_id(self):
-        """If move_id, the quantity must be more than 0 and not more than the original quantity"""
+        """If move_id, the quantity must be more than 0 and
+        not more than the original quantity"""
         for rec in self:
             if rec.move_id:
                 if not 0 < rec.product_uom_qty <= rec.move_id.product_uom_qty:
                     raise ValidationError(
-                        _(
-                            "RMAs quantity must be bigger than 0 and smaller or equal to initial quantity"
-                        )
+                        _("RMAs quantity must be > 0 and <= to initial quantity")
                         + f"\n{rec}"
                     )
 
