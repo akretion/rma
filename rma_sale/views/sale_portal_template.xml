@@ -139,7 +139,7 @@
                                                         type="number"
                                                         style="display: none;"
                                                         t-attf-name="#{data_index}-move_id"
-                                                        t-att-value="data['move'].id"
+                                                        t-att-value="data['move_id'].id"
                                                     />
                                                 </td>
                                                 <td class="text-left">
