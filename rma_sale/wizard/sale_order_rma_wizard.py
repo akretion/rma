@@ -101,7 +101,8 @@ class SaleOrderLineRmaWizard(models.TransientModel):
         comodel_name="uom.uom",
         string="Unit of Measure",
         domain="[('category_id', '=', uom_category_id)]",
-        required=True,
+        compute="_compute_move_id",
+        store=True,
     )
     allowed_picking_ids = fields.Many2many(
         comodel_name="stock.picking", compute="_compute_allowed_picking_ids"
@@ -113,8 +114,7 @@ class SaleOrderLineRmaWizard(models.TransientModel):
     )
     move_id = fields.Many2one(comodel_name="stock.move", compute="_compute_move_id")
     operation_id = fields.Many2one(
-        comodel_name="rma.operation",
-        string="Requested operation",
+        comodel_name="rma.operation", string="Requested operation", required=1
     )
     description = fields.Text()
 
@@ -133,7 +133,7 @@ class SaleOrderLineRmaWizard(models.TransientModel):
                         and r.sale_line_id.order_id == record.order_id
                     )
                 )
-            record.move_id = move_id
+            record.write({"move_id": move_id.id, "uom_id": move_id.product_uom.id})
 
     @api.depends("order_id")
     def _compute_allowed_product_ids(self):

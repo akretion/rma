@@ -27,13 +27,25 @@ class CustomerPortal(CustomerPortal):
         wizard_obj = request.env["sale.order.rma.wizard"]
         # Set wizard line vals
         mapped_vals = {}
+        wizard_line_fields = request.env["sale.order.line.rma.wizard"]._fields
         for name, value in post.items():
             row, field_name = name.split("-", 1)
+            # what we receive from web is string, so we are going to correct the types
+            if field_name in wizard_line_fields:
+                if wizard_line_fields[field_name].type in [
+                    "many2one",
+                    "int",
+                    "integer",
+                ]:
+                    value = int(value)
+                elif wizard_line_fields[field_name].type == "float":
+                    value = float(value)
             mapped_vals.setdefault(row, {}).update({field_name: value})
         # If no operation is filled, no RMA will be created
         line_vals = [
             (0, 0, vals) for vals in mapped_vals.values() if vals.get("operation_id")
         ]
+
         # Create wizard an generate rmas
         order = order_obj.browse(order_id).sudo()
         location_id = order.warehouse_id.rma_loc_id.id

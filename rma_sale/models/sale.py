@@ -39,8 +39,12 @@ class SaleOrder(models.Model):
                 {
                     "product_id": data["product"].id,
                     "quantity": data["quantity"],
+                    "move_id": data["move_id"].id,
                     "uom_id": data["uom"].id,
                     "picking_id": data["picking"] and data["picking"].id,
+                    "operation_id": self.env["rma.operation"]
+                    .search([("id", ">", -1)], order="id", limit=1)
+                    .id,
                 },
             )
             for data in self.get_delivery_rma_data()
@@ -119,6 +123,7 @@ class SaleOrderLine(models.Model):
                         "quantity": qty,
                         "uom": move.product_uom,
                         "picking": move.picking_id,
+                        "move_id": move,
                     }
                 )
         else:
