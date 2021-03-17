@@ -121,21 +121,20 @@ class SaleOrderLine(models.Model):
                     {
                         "product": product,
                         "quantity": qty,
-                        'move_id':move,
+                        "move_id": move,
                         "uom": move.product_uom,
                         "picking": move.picking_id,
-                        "move_id": move,
                     }
                 )
         else:
             pass
-#             data.append(
-#                 {
-#                     "product": product,
-#                     "quantity": self.qty_delivered,
-#                     "uom": self.product_uom,
-#                     "picking": False,
-#                     'move_id':False,
-#                 }
-#             )
+        #             data.append(
+        #                 {
+        #                     "product": product,
+        #                     "quantity": self.qty_delivered,
+        #                     "uom": self.product_uom,
+        #                     "picking": False,
+        #                     'move_id':False,
+        #                 }
+        #             )
         return data
