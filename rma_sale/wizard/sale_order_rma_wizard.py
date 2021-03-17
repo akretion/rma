@@ -133,7 +133,7 @@ class SaleOrderLineRmaWizard(models.TransientModel):
                         and r.sale_line_id.order_id == record.order_id
                     )
                 )
-            record.write({"move_id": move_id.id, "uom_id": move_id.product_uom.id})
+            record.write({"move_id": move_id.id if move_id else False, "uom_id": move_id.product_uom.id if move_id else False})
 
     @api.depends("order_id")
     def _compute_allowed_product_ids(self):

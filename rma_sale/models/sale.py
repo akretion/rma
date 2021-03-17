@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
                 {
                     "product_id": data["product"].id,
                     "quantity": data["quantity"],
-                    "move_id": data["move_id"].id,
+                    "move_id": data["move_id"] and data["move_id"].id,
                     "uom_id": data["uom"].id,
                     "picking_id": data["picking"] and data["picking"].id,
                     "operation_id": self.env["rma.operation"]
@@ -121,18 +121,21 @@ class SaleOrderLine(models.Model):
                     {
                         "product": product,
                         "quantity": qty,
+                        'move_id':move,
                         "uom": move.product_uom,
                         "picking": move.picking_id,
                         "move_id": move,
                     }
                 )
         else:
-            data.append(
-                {
-                    "product": product,
-                    "quantity": self.qty_delivered,
-                    "uom": self.product_uom,
-                    "picking": False,
-                }
-            )
+            pass
+#             data.append(
+#                 {
+#                     "product": product,
+#                     "quantity": self.qty_delivered,
+#                     "uom": self.product_uom,
+#                     "picking": False,
+#                     'move_id':False,
+#                 }
+#             )
         return data
