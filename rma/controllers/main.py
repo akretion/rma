@@ -10,12 +10,14 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 
 
 class PortalRma(CustomerPortal):
-    def _prepare_portal_layout_values(self):
-        values = super()._prepare_portal_layout_values()
-        if request.env["rma"].check_access_rights("read", raise_exception=False):
-            values["rma_count"] = request.env["rma"].search_count([])
-        else:
-            values["rma_count"] = 0
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+        if "rma_count" in counters:
+            values["rma_count"] = (
+                request.env["rma"].search_count([])
+                if request.env["rma"].check_access_rights("read", raise_exception=False)
+                else 0
+            )
         return values
 
     def _rma_get_page_view_values(self, rma, access_token, **kwargs):
@@ -46,7 +48,7 @@ class PortalRma(CustomerPortal):
         if not sortby:
             sortby = "date"
         order = searchbar_sortings[sortby]["order"]
-        archive_groups = self._get_archive_groups("rma", domain)
+        # v14 does not exist archive_groups = self._get_archive_groups("rma", domain)
         if date_begin and date_end:
             domain += [
                 ("create_date", ">", date_begin),
@@ -77,7 +79,7 @@ class PortalRma(CustomerPortal):
                 "rmas": rmas,
                 "page_name": "RMA",
                 "pager": pager,
-                "archive_groups": archive_groups,
+                #                "archive_groups": archive_groups,
                 "default_url": "/my/rmas",
                 "searchbar_sortings": searchbar_sortings,
                 "sortby": sortby,
@@ -118,7 +120,7 @@ class PortalRma(CustomerPortal):
         except exceptions.AccessError:
             return request.redirect("/my")
         report_sudo = request.env.ref("stock.action_report_delivery").sudo()
-        pdf = report_sudo.render_qweb_pdf([picking_sudo.id])[0]
+        pdf = report_sudo._render_qweb_pdf([picking_sudo.id])[0]
         pdfhttpheaders = [
             ("Content-Type", "application/pdf"),
             ("Content-Length", len(pdf)),
