@@ -94,7 +94,8 @@
                                                         t-esc="data['product'].display_name"
                                                     />
                                                     <input
-                                                        type="hidden"
+                                                        type="number"
+                                                        style="display: none;"
                                                         t-attf-name="#{data_index}-product_id"
                                                         t-att-value="data['product'].id"
                                                     />
@@ -116,7 +117,8 @@
                                                             groups="uom.group_uom"
                                                         />
                                                         <input
-                                                            type="hidden"
+                                                            type="number"
+                                                            style="display: none;"
                                                             t-attf-name="#{data_index}-uom_id"
                                                             t-att-value="data['uom'].id"
                                                         />
@@ -128,9 +130,16 @@
                                                         t-esc="data['picking'].name"
                                                     />
                                                     <input
-                                                        type="hidden"
+                                                        type="number"
+                                                        style="display: none;"
                                                         t-attf-name="#{data_index}-picking_id"
                                                         t-att-value="data['picking'].id"
+                                                    />
+                                                     <input
+                                                        type="number"
+                                                        style="display: none;"
+                                                        t-attf-name="#{data_index}-move_id"
+                                                        t-att-value="data['move_id'].id"
                                                     />
                                                 </td>
                                                 <td class="text-left">
