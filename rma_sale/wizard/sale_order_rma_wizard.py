@@ -101,7 +101,7 @@ class SaleOrderLineRmaWizard(models.TransientModel):
         comodel_name="uom.uom",
         string="Unit of Measure",
         domain="[('category_id', '=', uom_category_id)]",
-        compute="_compute_move_id",
+        compute_sudo="_compute_move_id",
         store=True,
     )
     allowed_picking_ids = fields.Many2many(
@@ -112,7 +112,9 @@ class SaleOrderLineRmaWizard(models.TransientModel):
         string="Delivery order",
         domain="[('id', 'in', allowed_picking_ids)]",
     )
-    move_id = fields.Many2one(comodel_name="stock.move", compute="_compute_move_id")
+    move_id = fields.Many2one(
+        comodel_name="stock.move", compute_sudo="_compute_move_id"
+    )
     operation_id = fields.Many2one(
         comodel_name="rma.operation", string="Requested operation", required=1
     )
