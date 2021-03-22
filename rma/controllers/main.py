@@ -10,12 +10,14 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 
 
 class PortalRma(CustomerPortal):
-    def _prepare_portal_layout_values(self):
-        values = super()._prepare_portal_layout_values()
-        if request.env["rma"].check_access_rights("read", raise_exception=False):
-            values["rma_count"] = request.env["rma"].search_count([])
-        else:
-            values["rma_count"] = 0
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+        if "rma_count" in counters:
+            values["rma_count"] = (
+                request.env["rma"].search_count([])
+                if request.env["rma"].check_access_rights("read", raise_exception=False)
+                else 0
+            )
         return values
 
     def _rma_get_page_view_values(self, rma, access_token, **kwargs):

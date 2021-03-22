@@ -22,6 +22,7 @@
         </xpath>
     </template>
     <template
+        customize_show="True"
         id="portal_my_home_rma"
         name="Portal My Home : RMA entries"
         inherit_id="portal.portal_my_home"
@@ -31,10 +32,11 @@
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">RMA Orders</t>
                 <t t-set="url" t-value="'/my/rmas'" />
-                <t t-set="count" t-value="rma_count" />
+                <t t-set="placeholder_count" t-value="'rma_count'" />
             </t>
         </xpath>
     </template>
+
     <template id="portal_my_rmas" name="My RMA Orders">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True" />
