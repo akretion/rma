@@ -510,7 +510,7 @@ class Rma(models.Model):
             # Assign a default team_id which will be the first in the sequence
             if "team_id" not in vals:
                 vals["team_id"] = self.sudo().env["rma.team"].search([], limit=1).id
-        return super(Rma,self).create(vals_list)
+        return super(Rma, self).create(vals_list)
 
     def copy(self, default=None):
         team = super().copy(default)
