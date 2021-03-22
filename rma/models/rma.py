@@ -506,11 +506,11 @@ class Rma(models.Model):
                 ir_sequence = self.env["ir.sequence"]
                 if "company_id" in vals:
                     ir_sequence = ir_sequence.with_company(vals["company_id"])
-                vals["name"] = ir_sequence.next_by_code("rma")
+                vals["name"] = ir_sequence.sudo().next_by_code("rma")
             # Assign a default team_id which will be the first in the sequence
             if "team_id" not in vals:
-                vals["team_id"] = self.env["rma.team"].search([], limit=1).id
-        return super().create(vals_list)
+                vals["team_id"] = self.sudo().env["rma.team"].search([], limit=1).id
+        return super(Rma,self).create(vals_list)
 
     def copy(self, default=None):
         team = super().copy(default)
