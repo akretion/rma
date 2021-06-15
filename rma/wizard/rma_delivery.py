@@ -30,8 +30,8 @@ class RmaReDeliveryWizard(models.TransientModel):
         string="Warehouse",
         required=True,
     )
-
-    @api.constrains("product_uom_qty")
+    uom_category_id = fields.Many2one(related="product_id.uom_id.category_id")
+    
     def _check_product_uom_qty(self):
         self.ensure_one()
         rma_ids = self.env.context.get("active_ids")

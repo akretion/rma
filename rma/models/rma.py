@@ -242,6 +242,7 @@ class Rma(models.Model):
         digits="Product Unit of Measure",
         compute="_compute_remaining_qty",
     )
+    uom_category_id = fields.Many2one(related="product_id.uom_id.category_id")
     # Split fields
     can_be_split = fields.Boolean(
         compute="_compute_can_be_split",
