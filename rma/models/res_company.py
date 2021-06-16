@@ -25,6 +25,7 @@ class Company(models.Model):
         default=_default_rma_mail_confirmation_template,
         help="Email sent to the customer once the RMA is confirmed.",
     )
+    rma_bypass_reception_step = fields.Boolean()
 
     @api.model
     def create(self, vals):

@@ -692,3 +692,10 @@ class TestRma(SavepointCase):
         self.assertTrue(rma.name in mail.subject)
         self.assertTrue(rma.name in mail.body)
         self.assertEqual(self.env.ref("rma.mt_rma_notification"), mail.subtype_id)
+
+    def test_validation_without_reception_step(self):
+        rma = self._create_rma(self.partner, self.product, 2, self.rma_loc)
+        rma.bypass_reception_step = True
+        rma.action_confirm()
+        self.assertEqual(rma.state, "received")
+        self.assertFalse(rma.can_be_returned)
